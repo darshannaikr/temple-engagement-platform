@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/divyasphere
     username: postgres
-    password: Naik@123
+    password:
 
   jpa:
     hibernate:
