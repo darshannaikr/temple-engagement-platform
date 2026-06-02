@@ -2,10 +2,8 @@ spring:
   application:
     name: divyasphere-platform
 
-  datasource:
-    url: jdbc:postgresql://localhost:5432/divyasphere
-    username: postgres
-    password:
+  profiles:
+    active: local
 
   jpa:
     hibernate:
