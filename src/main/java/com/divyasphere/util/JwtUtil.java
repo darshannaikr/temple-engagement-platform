@@ -1,5 +1,6 @@
 package com.divyasphere.util;
 
+import com.divyasphere.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -27,12 +28,14 @@ public class JwtUtil {
         secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String generateToken(String email){
+    public String generateToken(User user){
         Date now = new Date();
         Date expirayDate = new Date(now.getTime() + expiration);
 
         return Jwts.builder()
-                .subject(email)
+                .subject(user.getEmail())
+                .claim("role", user.getRole())
+                .claim("id", user.getId())
                 .issuedAt(now)
                 .expiration(expirayDate)
                 .signWith(secretKey)
@@ -47,6 +50,28 @@ public class JwtUtil {
                 .getPayload();
 
         return claims.getSubject();
+    }
+
+    public String extractUserId(String token) {
+
+        Claims claims = Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+
+        return claims.get("userId", String.class);
+    }
+
+    public String extractRole(String token) {
+
+        Claims claims = Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+
+        return claims.get("role", String.class);
     }
 
     public boolean isTokenValid(String token){

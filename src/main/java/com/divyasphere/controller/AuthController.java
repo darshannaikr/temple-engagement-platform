@@ -1,7 +1,9 @@
 package com.divyasphere.controller;
 
+import com.divyasphere.dto.request.LoginRequest;
 import com.divyasphere.dto.request.SignupRequest;
 import com.divyasphere.dto.response.ApiResponse;
+import com.divyasphere.dto.response.AuthResponse;
 import com.divyasphere.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,5 +22,10 @@ public class AuthController {
     @PostMapping("/signup")
     public ApiResponse<String> signup(@Valid @RequestBody SignupRequest request){
         return authService.signup(request);
+    }
+
+    @PostMapping("/login")
+    public ApiResponse<AuthResponse> login(@Valid @RequestBody LoginRequest request){
+        return authService.login(request);
     }
 }
