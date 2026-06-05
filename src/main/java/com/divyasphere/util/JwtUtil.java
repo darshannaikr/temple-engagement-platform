@@ -42,36 +42,25 @@ public class JwtUtil {
                 .compact();
     }
 
-    public String extractEmail(String token){
-        Claims claims = Jwts.parser()
+    private Claims extractAllClaims(String token) {
+
+        return Jwts.parser()
                 .verifyWith(secretKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
+    }
 
-        return claims.getSubject();
+    public String extractEmail(String token){
+        return extractAllClaims(token).getSubject();
     }
 
     public String extractUserId(String token) {
-
-        Claims claims = Jwts.parser()
-                .verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
-
-        return claims.get("userId", String.class);
+        return extractAllClaims(token).get("id").toString();
     }
 
     public String extractRole(String token) {
-
-        Claims claims = Jwts.parser()
-                .verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
-
-        return claims.get("role", String.class);
+        return extractAllClaims(token).get("role", String.class);
     }
 
     public boolean isTokenValid(String token){
